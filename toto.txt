@@ -1,3 +1,10 @@
+<<<<<<< .mine
+toto
+hujtyus
+||||||| .r3
+toto
+=======
 toto
 
 tata
+>>>>>>> .r4
