@@ -12,7 +12,7 @@ imageStartCarotides = input('Entrer le numéro (X) de la première image de CAROTI
 imageEndAorte = input('Entrer le numéro de la (X) de la dernière image de l AORTE (IM-0001-000X-0001.dcm): ');
 % RM1 : 165, RM2 : 250, RM3 : 188
 typeImage = upper(input('Entrez le type de fichier CT ou IRM : ','s'));
-%cheminToDicom = 'C:/Users/Solange/Desktop/Documents/ISBS3/RID/TSA CT 1/';
+%cheminToDicom = 'C:/Users/Solange/Desktop/Documents/ISBS3/RID/TSA MR 1/';
 
 % création de la matrice de travail
 
