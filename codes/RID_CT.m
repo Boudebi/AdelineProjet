@@ -86,11 +86,11 @@ matrice_carotide4 = chargementDICOM(imageStartCarotide,imageEndCarotide,matrice_
 disp('Veuillez selectionner le centre de l aorte : ')
 imshow(imadjust(matrice_aorte(:,:,nbrSliceAorte)));
 [x,y] = getpts;
-
-
+y=round(y(1)); 
+x=round(x(1));
 
 disp('Segmentation par region growing')
-matrice_aorte = regionGrowing2(matrice_aorte,[x,y,1],200,Inf, [], true, false);
+matrice_aorte = regionGrowing2(matrice_aorte, [x,y,1], 200, Inf, [], true, false);
 imshow(matrice_aorte(:,:,1))
 
 disp('Veuillez selectionner le centre des 4 carotides : ')
@@ -99,18 +99,26 @@ disp('Veuillez selectionner le centre des 4 carotides : ')
 figure(); 
 imshow(imadjust(matrice_carotide1(:,:,1)));
 [x1, y1]=getpts;
+y1=round(y1(1)); 
+x1=round(x1(1));
 
 figure(); 
-imshow(imadjust(matrice_carotide1(:,:,1)));
+imshow(imadjust(matrice_carotide2(:,:,1)));
 [x2, y2]=getpts;
+y2=round(y2(1)); 
+x2=round(x2(1));
 
 figure(); 
-imshow(imadjust(matrice_carotide1(:,:,1)));
+imshow(imadjust(matrice_carotide3(:,:,1)));
 [x3, y3]=getpts;
+y3=round(y3(1)); 
+x3=round(x3(1));
 
 figure(); 
-imshow(imadjust(matrice_carotide1(:,:,1)));
+imshow(imadjust(matrice_carotide4(:,:,1)));
 [x4, y4]=getpts;
+y4=round(y4(1)); 
+x4=round(x4(1));
 
 matrice_carotide1 = regionGrowing2(matrice_carotide1,[x1,y1,1],200,Inf, [], true, false);
 matrice_carotide2 = regionGrowing2(matrice_carotide2,[x2,y2,1],200,Inf, [], true, false);
