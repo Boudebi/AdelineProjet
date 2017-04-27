@@ -19,7 +19,7 @@ imageEndCarotide = input('Entrer le numéro de la (X) de la dernière image pour l
 
 
 typeImage = upper(input('Entrez le type de fichier CT ou IRM : ','s'));
-%cheminToDicom = 'C:\Users\adels\OneDrive\Documents\cours_ISBS2\S1\RID\TSA\TSA CT 1\';
+%cheminToDicom = 'C:\Users\adels\OneDrive\Documents\cours_ISBS2\S2\RID\TSA\TSA CT 1\';
 
 % création de la matrice de travail
 
@@ -84,13 +84,13 @@ matrice_carotide4 = chargementDICOM(imageStartCarotide,imageEndCarotide,matrice_
 
 % initialisation des position x et y
 disp('Veuillez selectionner le centre de l aorte : ')
-imshow(imadjust(matrice_aorte(:,:,nbrSliceAorte)));
+imshow(imadjust(matrice_aorte(:,:,1)));
 [x,y] = getpts;
 y=round(y(1)); 
 x=round(x(1));
 
 disp('Segmentation par region growing')
-matrice_aorte = regionGrowing2(matrice_aorte, [x,y,1], 200, Inf, [], true, false);
+[Vers, matrice_aorte] = regionGrowing2(matrice_aorte, [x,y,1]);
 imshow(matrice_aorte(:,:,1))
 
 disp('Veuillez selectionner le centre des 4 carotides : ')
@@ -120,10 +120,10 @@ imshow(imadjust(matrice_carotide4(:,:,1)));
 y4=round(y4(1)); 
 x4=round(x4(1));
 
-matrice_carotide1 = regionGrowing2(matrice_carotide1,[x1,y1,1],200,Inf, [], true, false);
-matrice_carotide2 = regionGrowing2(matrice_carotide2,[x2,y2,1],200,Inf, [], true, false);
-matrice_carotide3 = regionGrowing2(matrice_carotide3,[x3,y3,1],200,Inf, [], true, false);
-matrice_carotide4 = regionGrowing2(matrice_carotide4,[x4,y4,1],200,Inf, [], true, false);
+[Vers1, matrice_carotide1] = regionGrowing2(matrice_carotide1,[x1,y1,1]);
+[Vers2, matrice_carotide2] = regionGrowing2(matrice_carotide2,[x2,y2,1]);
+[Vers3, matrice_carotide3] = regionGrowing2(matrice_carotide3,[x3,y3,1]);
+[Vers4, matrice_carotide4] = regionGrowing2(matrice_carotide4,[x4,y4,1]);
 
 % ------ Ajout des differentes segmentation dans la même matrice ----------
 % prend le plus de slice possible
