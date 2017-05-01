@@ -7,13 +7,14 @@ close all
 clc
 
 cheminToDicom = input('Entrer le chemin vers le dicom a charger: ','s');
+%cheminToDicom = 'C:\Users\Benjamin\Documents\AdelineProjet.git\TSA\TSA CT 1';
 imageStartAorte = input('Entrer le numéro (X) de la première image de l AORTE (IM-0001-000X-0001.dcm): ');
-% 500
+% 487 | 500
 imageEndAorte = input('Entrer le numéro de la (X) de la dernière image de l AORTE(IM-0001-000X-0001.dcm): ');
-% 613
-imageStartCarotide = input('Entrer le numéro (X) de la première image pour les CAROTIDES (IM-0001-000X-0001.dcm): ');
+% 540| 613
+%imageStartCarotide = 420;%input('Entrer le numéro (X) de la première image pour les CAROTIDES (IM-0001-000X-0001.dcm): ');
 % 504
-imageEndCarotide = input('Entrer le numéro de la (X) de la dernière image pour les CAROTIDES (IM-0001-000X-0001.dcm): ');
+%imageEndCarotide = 504;%input('Entrer le numéro de la (X) de la dernière image pour les CAROTIDES (IM-0001-000X-0001.dcm): ');
 % 420
 
 
@@ -63,74 +64,76 @@ imageInit = imcrop(imageCrop,[xCrop yCrop size(imageCrop,2) size(imageCrop,1)]);
 %dans le dossier
 
 nbrSliceAorte = imageEndAorte-imageStartAorte;
-nbrSliceCarotide = imageEndCarotide-imageStartCarotide;
+%nbrSliceCarotide = imageEndCarotide-imageStartCarotide;
 
 matrice_aorte = zeros(size(imageInit,1),size(imageInit,2),nbrSliceAorte);
-matrice_carotide1 = zeros(size(imageInit,1),size(imageInit,2),nbrSliceCarotide);
-matrice_carotide2 = zeros(size(imageInit,1),size(imageInit,2),nbrSliceCarotide);
-matrice_carotide3 = zeros(size(imageInit,1),size(imageInit,2),nbrSliceCarotide);
-matrice_carotide4 = zeros(size(imageInit,1),size(imageInit,2),nbrSliceCarotide);
+%matrice_carotide1 = zeros(size(imageInit,1),size(imageInit,2),nbrSliceCarotide);
+%matrice_carotide2 = zeros(size(imageInit,1),size(imageInit,2),nbrSliceCarotide);
+%matrice_carotide3 = zeros(size(imageInit,1),size(imageInit,2),nbrSliceCarotide);
+%matrice_carotide4 = zeros(size(imageInit,1),size(imageInit,2),nbrSliceCarotide);
 
 % boucle pour charger le DICOM
 disp('Chargement des DICOM')
 
 matrice_aorte = chargementDICOM(imageStartAorte,imageEndAorte,matrice_aorte,cheminToDicom,xCrop,yCrop,imageCrop);
-matrice_carotide1 = chargementDICOM(imageStartCarotide,imageEndCarotide,matrice_carotide1,cheminToDicom,xCrop,yCrop,imageCrop);
-matrice_carotide2 = chargementDICOM(imageStartCarotide,imageEndCarotide,matrice_carotide2,cheminToDicom,xCrop,yCrop,imageCrop);
-matrice_carotide3 = chargementDICOM(imageStartCarotide,imageEndCarotide,matrice_carotide3,cheminToDicom,xCrop,yCrop,imageCrop);
-matrice_carotide4 = chargementDICOM(imageStartCarotide,imageEndCarotide,matrice_carotide4,cheminToDicom,xCrop,yCrop,imageCrop);
+%matrice_carotide1 = chargementDICOM(imageStartCarotide,imageEndCarotide,matrice_carotide1,cheminToDicom,xCrop,yCrop,imageCrop);
+%matrice_carotide2 = chargementDICOM(imageStartCarotide,imageEndCarotide,matrice_carotide2,cheminToDicom,xCrop,yCrop,imageCrop);
+%matrice_carotide3 = chargementDICOM(imageStartCarotide,imageEndCarotide,matrice_carotide3,cheminToDicom,xCrop,yCrop,imageCrop);
+%matrice_carotide4 = chargementDICOM(imageStartCarotide,imageEndCarotide,matrice_carotide4,cheminToDicom,xCrop,yCrop,imageCrop);
 
 % ---------------------- Region growing pour aorte-------------------------
 
 % initialisation des position x et y
 disp('Veuillez selectionner le centre de l aorte : ')
-imshow(imadjust(matrice_aorte(:,:,1)));
+imshow(imadjust(matrice_aorte(:,:,nbrSliceAorte)));
 [x,y] = getpts;
 y=round(y(1)); 
 x=round(x(1));
 
 disp('Segmentation par region growing')
-[Vers, matrice_aorte] = regionGrowing2(matrice_aorte, [x,y,1]);
+[Vers, matrice_aorte] = regionGrowing2(matrice_aorte, [x,y,nbrSliceAorte]);
+%[Vers, matrice_aorte] = regionGrowing2(matrice_aorte);
 imshow(matrice_aorte(:,:,1))
 
-disp('Veuillez selectionner le centre des 4 carotides : ')
+%disp('Veuillez selectionner le centre des 4 carotides : ')
 
 % initialisation des points pour les snake et les différentes carotides
-figure(); 
-imshow(imadjust(matrice_carotide1(:,:,1)));
-[x1, y1]=getpts;
-y1=round(y1(1)); 
-x1=round(x1(1));
-
-figure(); 
-imshow(imadjust(matrice_carotide2(:,:,1)));
-[x2, y2]=getpts;
-y2=round(y2(1)); 
-x2=round(x2(1));
-
-figure(); 
-imshow(imadjust(matrice_carotide3(:,:,1)));
-[x3, y3]=getpts;
-y3=round(y3(1)); 
-x3=round(x3(1));
-
-figure(); 
-imshow(imadjust(matrice_carotide4(:,:,1)));
-[x4, y4]=getpts;
-y4=round(y4(1)); 
-x4=round(x4(1));
-
-[Vers1, matrice_carotide1] = regionGrowing2(matrice_carotide1,[x1,y1,1]);
-[Vers2, matrice_carotide2] = regionGrowing2(matrice_carotide2,[x2,y2,1]);
-[Vers3, matrice_carotide3] = regionGrowing2(matrice_carotide3,[x3,y3,1]);
-[Vers4, matrice_carotide4] = regionGrowing2(matrice_carotide4,[x4,y4,1]);
+% figure(); 
+% imshow(imadjust(matrice_carotide1(:,:,1)));
+% [x1, y1]=getpts;
+% y1=round(y1(1)); 
+% x1=round(x1(1));
+% 
+% figure(); 
+% imshow(imadjust(matrice_carotide2(:,:,1)));
+% [x2, y2]=getpts;
+% y2=round(y2(1)); 
+% x2=round(x2(1));
+% 
+% figure(); 
+% imshow(imadjust(matrice_carotide3(:,:,1)));
+% [x3, y3]=getpts;
+% y3=round(y3(1)); 
+% x3=round(x3(1));
+% 
+% figure(); 
+% imshow(imadjust(matrice_carotide4(:,:,1)));
+% [x4, y4]=getpts;
+% y4=round(y4(1)); 
+% x4=round(x4(1));
+% 
+% [Vers1, matrice_carotide1] = regionGrowing2(matrice_carotide1,[x1,y1,1]);
+% [Vers2, matrice_carotide2] = regionGrowing2(matrice_carotide2,[x2,y2,1]);
+% [Vers3, matrice_carotide3] = regionGrowing2(matrice_carotide3,[x3,y3,1]);
+% [Vers4, matrice_carotide4] = regionGrowing2(matrice_carotide4,[x4,y4,1]);
 
 % ------ Ajout des differentes segmentation dans la même matrice ----------
 % prend le plus de slice possible
-nbrSlice = max([imageEndAorte imageEndCarotide]) - min([imageStartAorte imageStartCarotide]);
-matrice_totale = zeros(size(imageInit,1),size(imageInit,2),nbrSlice);
-
-matrice_totale = matrice_aorte + matrice_carotide1 + matrice_carotide2+ matrice_carotide3+ matrice_carotide4;
+% nbrSlice = max([imageEndAorte imageEndCarotide]) - min([imageStartAorte imageStartCarotide]);
+% matrice_totale = zeros(size(imageInit,1),size(imageInit,2),nbrSlice);
+% 
+% matrice_totale = matrice_aorte + matrice_carotide1 + matrice_carotide2+ matrice_carotide3+ matrice_carotide4;
+matrice_totale = matrice_aorte;
 
 
 % ------------------------- Visualisation ---------------------------------

@@ -80,6 +80,7 @@ end
 
 if ~exist('thresVal', 'var') || isempty(thresVal)
     thresVal = double((max(cIM(:)) - min(cIM(:)))) * 0.05;
+    disp(['thresVal = ' thresVal ' max(cIM(:)) = ' max(cIM(:)) ' min(cIM(:)) = ' min(cIM(:))])
 end
 
 if ~exist('maxDist', 'var') || isempty(maxDist)
