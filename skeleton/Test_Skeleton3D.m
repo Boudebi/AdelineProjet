@@ -3,7 +3,7 @@ close all;
 
 %load matrice_aorte
 
-cheminToDicom = 'C:\Users\Benjamin\Documents\AdelineProjet.git\TSA\TSA CT 1\Segmentation 3';
+cheminToDicom = 'C:\Users\adels\OneDrive\Documents\cours_ISBS2\S2\RID\Segmentation 3';
 
 nomImageCrop = strcat(cheminToDicom,'\Segmentation001.dcm');
 imageCrop = dicomread(nomImageCrop);
